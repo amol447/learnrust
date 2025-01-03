@@ -2,11 +2,11 @@ extern crate nalgebra as na;
 use na::{DMatrix, DVector};
 
 pub struct KalmanFilter {
-    curr_state: DVector<f64>,                   //x_0
+    pub curr_state: DVector<f64>,                   //x_0
     state_transition: DMatrix<f64>,             //F
     measurement_matrix: DMatrix<f64>,           //H
     control_matrix: DMatrix<f64>,               //B
-    state_covariance: DMatrix<f64>,             //P
+    pub state_covariance: DMatrix<f64>,             //P
     measurement_noise_covariance: DMatrix<f64>, //Q
     process_noise_covariance: DMatrix<f64>,     //R
 }
