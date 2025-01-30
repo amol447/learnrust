@@ -58,3 +58,37 @@ fn test_noisy_1d() {
         println!("{:?}", state_track_vec[i]);
     }
 }
+
+fn test_constant_acceleration(){
+    let state_vector: DVector<f64> = dvector![0.0, 0.0, 0.0, 0.0, 1.0, 1.0];
+    let delta_t = 0.1; // Example time step
+    let state_transition_matrix: DMatrix<f64> = dmatrix![
+        1.0, 0.0, delta_t, 0.0, 0.5 * delta_t * delta_t, 0.0;
+        0.0, 1.0, 0.0, delta_t, 0.0, 0.5 * delta_t * delta_t;
+        0.0, 0.0, 1.0, 0.0, delta_t, 0.0;
+        0.0, 0.0, 0.0, 1.0, 0.0, delta_t;
+        0.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+        0.0, 0.0, 0.0, 0.0, 0.0, 1.0
+    ];
+    let measurement_noise_covariance = 0.1 * DMatrix::identity(2, 2);
+    let measurement_matrix: DMatrix<f64> = dmatrix![
+        1.0, 0.0, 0.0, 0.0, 0.0, 0.0;
+        0.0, 1.0, 0.0, 0.0, 0.0, 0.0
+    ];
+    let dummy_input = dvector![0.0];
+    let init_state=dvector![0.0, 0.0, 1.0, 2.0, 0.2, -0.1];
+    let control_matrix: DMatrix<f64> = DMatrix::zeros(6, 1);
+    let state_covariance_matrix: DMatrix<f64> = DMatrix::identity(6, 6);
+    let process_noise_covariance: DMatrix<f64> = 0.1 * DMatrix::identity(6, 6);
+    // Create the Kalman filter
+    let mut kf = KalmanFilter::new(
+        init_state,
+        state_transition_matrix,
+        measurement_matrix,
+        control_matrix,
+        state_covariance_matrix,
+        measurement_noise_covariance,
+        process_noise_covariance,
+    ).unwrap();
+    let measurement = dvector![0.1, 0.2];
+}

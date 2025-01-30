@@ -23,5 +23,5 @@ positions_noisy = [(x + randn()*noise_level, y + randn()*noise_level)
 #     println("t=$(times[i]) -> x=$x, y=$y")
 # end
 using DataFrames, CSV
-df = DataFrame(t=times, x=[x for (x, y) in positions_noisy], y=[y for (x, y) in positions_noisy])
+df = DataFrame(t=times, measurement_x=[x for (x, y) in positions_noisy], measurement_y=[y for (x, y) in positions_noisy], acutal_x=[x for (x, y) in positions], acutal_y=[y for (x, y) in positions])
 CSV.write("data.csv", df)
